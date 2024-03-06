@@ -27,12 +27,12 @@ odoo.define("pos_sale_order_load.models", function (require) {
     models.PosModel = models.PosModel.extend({
         async _addProducts(ids, setAvailable = true) {
             if (setAvailable) {
-                await this.env.services.rpc({
-                    model: "product.product",
-                    method: "write",
-                    args: [ids, {available_in_pos: true}],
-                    context: this.env.session.user_context,
-                });
+                // await this.env.services.rpc({
+                //     model: "product.product",
+                //     method: "write",
+                //     args: [ids, {available_in_pos: true}],
+                //     context: this.env.session.user_context,
+                // });
             }
             const product = await this.env.services.rpc({
                 model: "product.product",
@@ -116,7 +116,7 @@ odoo.define("pos_sale_order_load.models", function (require) {
          */
         setQuantityFromSOL: function (saleOrderLine) {
             if (this.product.type === "service") {
-                this.set_quantity(saleOrderLine.qty_to_invoice);
+                this.set_quantity(saleOrderLine.product_uom_qty);
             } else {
                 this.set_quantity(
                     saleOrderLine.product_uom_qty -
